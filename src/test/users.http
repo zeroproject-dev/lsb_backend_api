@@ -1,0 +1,35 @@
+# List users
+GET http://localhost:3300/api/v1/users/
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2OTQ0NjgyNjcsImV4cCI6MTY5NDQ2ODg2NywidXNlciI6MX0.QHIy-dnAuVVvXoR6GrPOvvISDesi86NZTnhUKpAJN6c
+
+# Create user
+POST http://localhost:3300/api/v1/users/
+Content-Type: application/json
+
+{
+  "first_name": "Jesus",
+  "second_name": "Andres",
+  "first_surname": "Copeticona",
+  "second_surname": "Justiniano",
+  "email": "andrescopeticona7@gmail.com",
+  "role": 1
+}
+
+# Get one user
+GET http://localhost:3300/api/v1/users/1
+
+# Delete a user
+DELETE http://localhost:3300/api/v1/users/1
+
+# Update a user
+PUT http://localhost:3300/api/v1/users/1
+Content-Type: application/json
+
+{
+  "first_name": "Jesus",
+  "second_name": "Andres",
+  "first_surname": "Copeticona",
+  "second_surname": "Justiniano",
+  "email": "andrescopeticona7@gmail.com",
+  "role": 1
+}

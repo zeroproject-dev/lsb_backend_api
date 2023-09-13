@@ -1,0 +1,17 @@
+GET http://localhost:3300/api/v1/roles/
+
+GET http://localhost:3300/api/v1/roles/1
+
+DELETE http://localhost:3300/api/v1/users/1
+
+PUT http://localhost:3300/api/v1/users/1
+Content-Type: application/json
+
+{
+  "first_name": "Jesus",
+  "second_name": "Andres",
+  "first_surname": "Copeticona",
+  "second_surname": "Justiniano",
+  "email": "andrescopeticona7@gmail.com",
+  "role": 1
+}
