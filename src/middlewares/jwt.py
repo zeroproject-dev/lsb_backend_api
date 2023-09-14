@@ -25,17 +25,20 @@ def check_permissions(module, permissions):
     res, code = check_jwt(token)
 
     if res is not None:
-        return False, res
+        return None, res
 
     user = TUSER.query.get(code)
 
     if not user:
-        return False, "Usuario desconocido"
+        return None, "Usuario desconocido"
 
     permissions_of_user = get_permissions_of_role(
         user.role_id).get(module)
 
-    if not permissions_of_user or not all(elem in permissions_of_user for elem in permissions):
-        return False, "No autorizado"
+    if not permissions_of_user or not all(elem.lower() in [perm.lower() for perm in permissions_of_user] for elem in permissions):
+        return None, "No autorizado"
 
-    return True, "Success"
+    user = user.to_json()
+    user['permissions'] = permissions_of_user
+
+    return user, "Success"

@@ -10,7 +10,7 @@ def check_users_list():
 
 
 def check_users_register():
-    return check_users_permissions(['Registrar usuario'])
+    return check_users_permissions(['Agregar usuario'])
 
 
 def check_users_modify():

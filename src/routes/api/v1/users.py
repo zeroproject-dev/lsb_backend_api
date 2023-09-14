@@ -10,8 +10,8 @@ usersRoutes = Blueprint("users", __name__, url_prefix="/users")
 
 @usersRoutes.get("/")
 def list_users():
-    is_authorized, msg = check_users_list()
-    if not is_authorized:
+    user, msg = check_users_list()
+    if user is None:
         return jsonify({"message": msg}), 400
 
     users = TUSER.query.all()
@@ -20,8 +20,8 @@ def list_users():
 
 @usersRoutes.post("/")
 def create_user():
-    is_authorized, msg = check_users_register()
-    if not is_authorized:
+    user, msg = check_users_register()
+    if user is None:
         return jsonify({"message": msg}), 400
 
     json_user = request.json
@@ -37,8 +37,8 @@ def create_user():
 
 @usersRoutes.get("/<int:id>")
 def get_user(id: int):
-    is_authorized, msg = check_users_list()
-    if not is_authorized:
+    user, msg = check_users_list()
+    if user is None:
         return jsonify({"message": msg}), 400
 
     user = TUSER.query.get(id)
@@ -50,8 +50,8 @@ def get_user(id: int):
 
 @usersRoutes.delete("/<int:id>")
 def delete_user(id: int):
-    is_authorized, msg = check_users_delete()
-    if not is_authorized:
+    user, msg = check_users_delete()
+    if user is None:
         return jsonify({"message": msg}), 400
 
     if id == 1:
@@ -68,8 +68,8 @@ def delete_user(id: int):
 
 @usersRoutes.put("/<int:id>")
 def update_user(id: int):
-    is_authorized, msg = check_users_modify()
-    if not is_authorized:
+    user, msg = check_users_modify()
+    if user is None:
         return jsonify({"message": msg}), 400
 
     if id == 1:
