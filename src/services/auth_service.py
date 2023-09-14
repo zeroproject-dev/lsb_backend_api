@@ -14,7 +14,7 @@ class AuthService():
         date_now = datetime.now(tz=cls.tz)
         payload = {
             'iat': date_now,
-            'exp': date_now + timedelta(minutes=10),
+            'exp': date_now + timedelta(hours=10),
             'user': user.id,
         }
 

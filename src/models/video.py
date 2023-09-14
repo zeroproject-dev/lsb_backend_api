@@ -1,7 +1,7 @@
 from sqlalchemy.sql.expression import text
 from sqlalchemy.sql.schema import Column, ForeignKey
 from sqlalchemy.types import \
-    Enum, Integer, String, LargeBinary, TIMESTAMP
+    Enum, Integer, String, LargeBinary, TIMESTAMP, Float
 
 from database.db import db
 
@@ -13,6 +13,7 @@ class TVIDEO(db.Model):
     path = Column(String(255), nullable=False)
     uploaded_by = Column(Integer, ForeignKey("T_USER.id"), nullable=False)
     preview = Column(LargeBinary)
+    duration = Column(Float)
     uploaded_date = Column(TIMESTAMP, server_default=text('CURRENT_TIMESTAMP'))
     state = Column(Enum('active', 'inactive'), server_default=text("'active'"))
 

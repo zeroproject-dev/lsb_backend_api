@@ -7,4 +7,4 @@ from app import app
 
 
 if __name__ == "__main__":
-    app.run(port=3300, debug=os.getenv('ENV') == 'debug')
+    app.run(port=3300, debug=os.getenv('ENV') == 'debug', host="0.0.0.0")

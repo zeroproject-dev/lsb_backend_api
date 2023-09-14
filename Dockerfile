@@ -1,6 +1,19 @@
-FROM tiangolo/uwsgi-nginx-flask:python3.11-alpine
-RUN apk --update add bash nano, vim
-ENV STATIC_URL /static
-ENV STATIC_PATH /var/www/app/static
-COPY ./requirements.txt /var/www/requirements.txt
-RUN pip install -r /var/www/requirements.txt
+# syntax=docker/dockerfile:1.4
+FROM --platform=$BUILDPLATFORM python:3.11 AS builder
+RUN apt update && apt-get install -y git default-libmysqlclient-dev build-essential
+
+WORKDIR /code
+COPY requirements.txt /code
+RUN --mount=type=cache,target=/root/.cache/pip \
+  pip3 install -r requirements.txt
+
+COPY . .
+
+ENV FLASK_APP src/main.py
+ENV ENV prod 
+ENV JWT_KEY bJHYd7M8sYoTgdCLBryz^eg&Hz2&wN4N
+
+EXPOSE 3300
+
+# CMD ["flask", "run"]
+CMD ["python3", "src/main.py"]
