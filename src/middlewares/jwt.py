@@ -20,7 +20,7 @@ def check_permissions(module, permissions):
     token = request.headers.get('Authorization')
 
     if not token:
-        return jsonify({'message': 'Token JWT faltante'}), 401
+        return None, 'Token JWT faltante'
 
     res, code = check_jwt(token)
 
