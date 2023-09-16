@@ -1,4 +1,4 @@
-from flask import jsonify, request
+from flask import request
 import jwt
 from sqlalchemy.util.deprecations import os
 

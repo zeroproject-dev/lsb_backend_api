@@ -6,16 +6,16 @@ def check_users_permissions(permissions):
 
 
 def check_users_list():
-    return check_users_permissions(['Listar usuarios'])
+    return check_users_permissions(['listar usuarios'])
 
 
 def check_users_register():
-    return check_users_permissions(['Agregar usuario'])
+    return check_users_permissions(['agregar usuario'])
 
 
 def check_users_modify():
-    return check_users_permissions(['Modificar usuario'])
+    return check_users_permissions(['modificar usuario'])
 
 
 def check_users_delete():
-    return check_users_permissions(['Eliminar usuario'])
+    return check_users_permissions(['eliminar usuario'])

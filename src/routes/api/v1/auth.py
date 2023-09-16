@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 from models.user import TUSER
 from services.auth_service import AuthService
 
+from utils.roles import get_permissions_of_role
 from utils.validators import is_valid_json_login
 
 
@@ -19,9 +20,15 @@ def login():
     if user is None or not user.is_correct_password(login_json['password']):
         return jsonify({"message": "usuario o contraseña incorrecto"}), 400
 
-    token = AuthService().generate_token(user)
+    if user.state != 'active':
+        return jsonify({"message": "usuario deshabilitado"}), 400
 
-    return jsonify({'success': True, 'token': token})
+    token = AuthService().generate_token(user)
+    user = user.to_json()
+    user['token'] = token
+    user['permissions'] = get_permissions_of_role(user.get('role'))
+
+    return jsonify({'success': True, "user": user})
 
 
 @authRoutes.post('/logout')
