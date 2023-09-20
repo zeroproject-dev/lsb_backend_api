@@ -1,10 +1,12 @@
 from datetime import datetime
+from sys import exception
 from flask import Blueprint, jsonify, request
 from sqlalchemy.util.deprecations import os
 from werkzeug.utils import secure_filename
+import numpy as np
 
 from models.video import TVIDEO
-from utils.video import generate_preview, get_duration
+from utils.video import extract_points_of_video, generate_preview, get_duration
 from database.db import db
 
 
@@ -24,6 +26,8 @@ VIDEOS_FOLDER = os.path.join(
     BASE_PATH, 'static', 'videos')
 IMAGES_FOLDER = os.path.join(
     BASE_PATH, 'static', 'images')
+POINTS_FOLDER = os.path.join(
+    BASE_PATH, 'static', 'points')
 
 try:
     os.makedirs(VIDEOS_FOLDER)
@@ -31,6 +35,10 @@ except:
     pass
 try:
     os.makedirs(IMAGES_FOLDER)
+except:
+    pass
+try:
+    os.makedirs(POINTS_FOLDER)
 except:
     pass
 
@@ -46,9 +54,10 @@ def create_video():
         return jsonify({'message': 'Falta el video'}), 400
 
     filename = secure_filename(video.filename)
+    name_without_extension = filename.rsplit('.')[0]
+
     file_path = os.path.join(VIDEOS_FOLDER, filename)
-    img_path = os.path.join(IMAGES_FOLDER, secure_filename(
-        video.filename).rsplit('.')[0] + '.jpg')
+    img_path = os.path.join(IMAGES_FOLDER,  name_without_extension + '.jpg')
 
     video.save(file_path)
 
@@ -56,8 +65,21 @@ def create_video():
 
     duration = get_duration(file_path)
 
-    if duration is None:
+    points = extract_points_of_video(file_path)
+
+    if duration is None or points is None:
         return jsonify({'message': 'Error al verificar el video'}), 400
+
+    try:
+        os.makedirs(os.path.join(
+            POINTS_FOLDER,  name_without_extension))
+    except:
+        return jsonify({'message': 'Error al verificar el video'}), 400
+
+    for i, point in enumerate(points):
+        points_path = os.path.join(
+            POINTS_FOLDER,  name_without_extension, str(i))
+        np.save(points_path, point)
 
     new_video = TVIDEO()
     new_video.path = file_path

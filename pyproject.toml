@@ -6,7 +6,7 @@ authors = ["Andres Copeticona <andrescopeticona@outlook.es>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = ">=3.11,<3.13"
 Flask = "^2.3.3"
 python-dotenv = "^1.0.0"
 flask-sqlalchemy = "^3.0.5"
@@ -15,10 +15,13 @@ jsonschema = "^4.19.0"
 pyjwt = "^2.8.0"
 pytz = "^2023.3.post1"
 boto3 = "^1.28.51"
+numpy = "^1.26.0"
+mediapipe = "^0.10.5"
+opencv-python = "^4.8.0.76"
 
 [tool.poetry.group.dev.dependencies]
 autopep8 = "^2.0.4"
-sqlacodegen = {git = "https://github.com/agronholm/sqlacodegen.git"}
+sqlacodegen = { git = "https://github.com/agronholm/sqlacodegen.git" }
 
 [build-system]
 requires = ["poetry-core"]

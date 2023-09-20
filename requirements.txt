@@ -27,3 +27,7 @@ sqlparse==0.4.4
 typing_extensions==4.7.1
 Werkzeug==2.3.7
 boto3==1.28.51
+mediapipe==0.10.5
+numpy==1.26.0
+opencv-contrib-python==4.8.0.76
+opencv-python==4.8.0.76
