@@ -26,3 +26,4 @@ SQLAlchemy==1.4.49
 sqlparse==0.4.4
 typing_extensions==4.7.1
 Werkzeug==2.3.7
+boto3==1.28.51

@@ -12,3 +12,18 @@ class TWORD(db.Model):
     id = Column(Integer, primary_key=True)
     word = Column(String(255), nullable=False)
     state = Column(Enum('active', 'inactive'), server_default=text("'active'"))
+
+    def from_json(self, json):
+        self.word = json['word']
+        self.state = self.state if self.state is not None else 'active'
+
+        return self
+
+    def to_json(self):
+        json = {}
+
+        json['id'] = self.id
+        json['word'] = self.word
+        json['state'] = self.state
+
+        return json

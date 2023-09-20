@@ -9,6 +9,8 @@ services:
       - .env.docker
     ports:
       - 3300:3300
+    volumes:
+      - ./docker_data/static:/code/static
     depends_on:
       - db
 
@@ -23,5 +25,6 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./data:/var/lib/mysql
+      - ./docker_data/data:/var/lib/mysql
       - ./config/init.sql:/docker-entrypoint-initdb.d/init.sql
+

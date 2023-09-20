@@ -22,6 +22,17 @@ def get_videos():
 BASE_PATH = os.getcwd()
 VIDEOS_FOLDER = os.path.join(
     BASE_PATH, 'static', 'videos')
+IMAGES_FOLDER = os.path.join(
+    BASE_PATH, 'static', 'images')
+
+try:
+    os.makedirs(VIDEOS_FOLDER)
+except:
+    pass
+try:
+    os.makedirs(IMAGES_FOLDER)
+except:
+    pass
 
 
 @videosRoutes.post('/')
@@ -34,11 +45,15 @@ def create_video():
     if video is None or video.filename is None:
         return jsonify({'message': 'Falta el video'}), 400
 
-    file_path = os.path.join(VIDEOS_FOLDER, secure_filename(video.filename))
+    filename = secure_filename(video.filename)
+    file_path = os.path.join(VIDEOS_FOLDER, filename)
+    img_path = os.path.join(IMAGES_FOLDER, secure_filename(
+        video.filename).rsplit('.')[0] + '.jpg')
 
     video.save(file_path)
 
-    thumbnail = generate_preview(file_path)
+    generate_preview(file_path, img_path)
+
     duration = get_duration(file_path)
 
     if duration is None:
@@ -46,8 +61,10 @@ def create_video():
 
     new_video = TVIDEO()
     new_video.path = file_path
-    new_video.preview = thumbnail
+    new_video.preview = img_path
     new_video.duration = duration
+    new_video.bucket = 'words'
+    new_video.region = 'us'
     new_video.uploaded_by = 1
     new_video.uploaded_date = datetime.now()
     new_video.state = 'active'
@@ -55,7 +72,7 @@ def create_video():
     db.session.add(new_video)
     db.session.commit()
 
-    return jsonify({'message': 'success'})
+    return jsonify(new_video.to_json())
 
 
 @videosRoutes.get('/:id')

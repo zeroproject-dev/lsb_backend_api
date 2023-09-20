@@ -1,12 +1,14 @@
 import os
 from flask import Flask, jsonify
 from database.db import db
-from middlewares.jwt import check_jwt
 from routes.api import api
 from dotenv import load_dotenv
 load_dotenv()
 
-app = Flask(__name__)
+BASE_PATH = os.getcwd()
+STATIC = os.path.join(
+    BASE_PATH, 'static')
+app = Flask(__name__, static_folder=STATIC)
 
 app.config['SECRET_KEY'] = str(os.getenv('SECRET_KEY')) if os.getenv(
     'SECRET_KEY') is not None else 'test'

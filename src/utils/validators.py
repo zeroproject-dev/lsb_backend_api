@@ -59,3 +59,20 @@ def is_valid_json_role(json):
         return True
     except Exception:
         return False
+
+
+word_schema = {
+    "type": "object",
+    "properties": {
+        "word": {"type": "string"},
+    },
+    "required": ["word"],
+}
+
+
+def is_valid_json_word(json):
+    try:
+        validate(instance=json, schema=word_schema)
+        return True
+    except Exception:
+        return False
