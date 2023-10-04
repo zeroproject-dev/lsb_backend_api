@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from database.db import db
-from middlewares.users_check import check_users_delete, check_users_list, check_users_modify, check_users_register
+from middlewares.users_check import check_users_delete, check_users_list, \
+    check_users_modify, check_users_register
 from models.role import TROLE
 from utils.roles import get_permissions_of_role
 

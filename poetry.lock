@@ -312,6 +312,20 @@ async = ["asgiref (>=3.2)"]
 dotenv = ["python-dotenv"]
 
 [[package]]
+name = "flask-cors"
+version = "4.0.0"
+description = "A Flask extension adding a decorator for CORS support"
+optional = false
+python-versions = "*"
+files = [
+    {file = "Flask-Cors-4.0.0.tar.gz", hash = "sha256:f268522fcb2f73e2ecdde1ef45e2fd5c71cc48fe03cffb4b441c6d1b40684eb0"},
+    {file = "Flask_Cors-4.0.0-py2.py3-none-any.whl", hash = "sha256:bc3492bfd6368d27cfe79c7821df5a8a319e1a6d5eab277a3794be19bdc51783"},
+]
+
+[package.dependencies]
+Flask = ">=0.9"
+
+[[package]]
 name = "flask-sqlalchemy"
 version = "3.0.5"
 description = "Add SQLAlchemy support to your Flask application."
@@ -1610,4 +1624,4 @@ watchdog = ["watchdog (>=2.3)"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.11,<3.13"
-content-hash = "ba0273c014c1f30d0c8790078ca41680aec37550f202215a7f65510386154a63"
+content-hash = "de82cfacfb79569554e02633ccab4a4631d1f92edf2a70898f1cc8fd6b3cd576"

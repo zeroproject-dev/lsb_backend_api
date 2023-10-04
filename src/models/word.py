@@ -15,7 +15,7 @@ class TWORD(db.Model):
 
     def from_json(self, json):
         self.word = json['word']
-        self.state = self.state if self.state is not None else 'active'
+        self.state = 'active' if self.state is None else self.state
 
         return self
 

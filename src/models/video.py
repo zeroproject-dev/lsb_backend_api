@@ -24,7 +24,7 @@ class TVIDEO(db.Model):
         self.uploaded_by = json['uploaded_by']
         self.preview = json['preview']
         self.uploaded_date = json['uploaded_date']
-        self.state = 'active'
+        self.state = 'active' if self.state is None else self.state
 
     def to_json(self):
         json = {}

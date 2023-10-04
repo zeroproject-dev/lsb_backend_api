@@ -4,7 +4,7 @@ from sqlalchemy.types import \
     Enum, Integer, String
 
 from database.db import db
-from models.models import TROLE
+from models.role import TROLE
 from utils.passwords import check_password
 
 
@@ -41,7 +41,7 @@ class TUSER(db.Model):
             'second_name') is not None else ''
         self.second_surname = json['second_surname']
         self.role_id = json['role']
-        self.state = 'active'
+        self.state = 'active' if self.state is None else self.state
 
         return self
 

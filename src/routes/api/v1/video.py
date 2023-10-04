@@ -1,5 +1,4 @@
 from datetime import datetime
-from sys import exception
 from flask import Blueprint, jsonify, request
 from sqlalchemy.util.deprecations import os
 from werkzeug.utils import secure_filename
@@ -15,7 +14,6 @@ videosRoutes = Blueprint('videos', __name__, url_prefix='/videos')
 
 @videosRoutes.get('/')
 def get_videos():
-
     videos = TVIDEO.query.all()
     return jsonify([video.to_json() for video in videos])
 
@@ -41,6 +39,11 @@ try:
     os.makedirs(POINTS_FOLDER)
 except:
     pass
+
+
+@videosRoutes.post('/asdf')
+def idk():
+    return jsonify({'message': 'holi el video'}), 200
 
 
 @videosRoutes.post('/')

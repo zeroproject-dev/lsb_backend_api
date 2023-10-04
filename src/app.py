@@ -1,4 +1,5 @@
 import os
+from flask_cors import CORS
 from flask import Flask, jsonify
 from database.db import db
 from routes.api import api
@@ -9,6 +10,8 @@ BASE_PATH = os.getcwd()
 STATIC = os.path.join(
     BASE_PATH, 'static')
 app = Flask(__name__, static_folder=STATIC)
+
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 app.config['SECRET_KEY'] = str(os.getenv('SECRET_KEY')) if os.getenv(
     'SECRET_KEY') is not None else 'test'
@@ -29,6 +32,7 @@ db_host = f"{db_config['host']}:{db_config['port']}"
 app.config['SQLALCHEMY_DATABASE_URI'] = \
     f"mysql://{db_user}@{db_host}/{db_config['database']}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 db.init_app(app)
 

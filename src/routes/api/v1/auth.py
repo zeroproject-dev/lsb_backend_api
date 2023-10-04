@@ -12,6 +12,7 @@ authRoutes = Blueprint('auth', __name__, url_prefix="/auth")
 @authRoutes.post('/login')
 def login():
     login_json = request.json
+
     if login_json is None or not is_valid_json_login(login_json):
         return jsonify({"message": "Petición incorrecta"}), 400
 

@@ -5,6 +5,7 @@ autopep8==2.0.4
 blinker==1.6.2
 click==8.1.7
 Flask==2.3.3
+Flask-Cors==4.0.0
 Flask-SQLAlchemy==3.0.5
 greenlet==3.0.0rc2
 inflect==7.0.0
