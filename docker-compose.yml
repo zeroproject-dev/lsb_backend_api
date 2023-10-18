@@ -6,9 +6,11 @@ services:
     build:
       context: .
     env_file:
-      - .env
-    ports:
-      - 3300:3300
+      - .env.prod
+    expose:
+      - 3300
+    networks:
+      - nginx_proxy_default
     volumes:
       - ./docker_data/static:/code/static
     depends_on:
@@ -19,10 +21,13 @@ services:
     container_name: lsb-db
     command: --default-authentication-plugin=mysql_native_password --init-file /docker-entrypoint-initdb.d/init.sql
     env_file:
-      - .env
-    ports:
-      - "3306:3306"
+      - .env.prod
     volumes:
       - ./docker_data/data:/var/lib/mysql
       - ./config/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - nginx_proxy_default
 
+networks:
+  nginx_proxy_default:
+    external: true
