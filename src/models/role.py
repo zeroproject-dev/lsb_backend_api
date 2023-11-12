@@ -57,3 +57,7 @@ class TROLEPERMISSION(db.Model):
     id = Column(Integer, primary_key=True)
     permission_id = Column(Integer, )
     role_id = Column(Integer, ForeignKey(TROLE.id))
+
+    def __init__(self, role, permission) -> None:
+        self.permission_id = permission
+        self.role_id = role

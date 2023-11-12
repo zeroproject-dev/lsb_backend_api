@@ -1,4 +1,6 @@
-from flask import request
+from functools import wraps
+from typing import Any
+from flask import current_app, request
 import jwt
 from sqlalchemy.util.deprecations import os
 
@@ -42,3 +44,17 @@ def check_permissions(module, permissions):
     user['permissions'] = permissions_of_user
 
     return user, "Success"
+
+
+# TODO: update with permissions
+def jwt_required(module, permissions) -> Any:
+    def wrapper(fn):
+        @wraps(fn)
+        def decorator(*args, **kwargs):
+            print("Module, Permissions")
+            print(module, permissions)
+            print("Args, kwargs")
+            print(args, kwargs)
+            return current_app.ensure_sync(fn)(*args, **kwargs)
+        return decorator
+    return wrapper

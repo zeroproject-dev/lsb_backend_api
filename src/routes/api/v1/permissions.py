@@ -1,3 +1,4 @@
+from models.response import Response
 from flask import Blueprint, jsonify, request
 from database.db import db
 from middlewares.users_check import check_users_list, \
@@ -17,14 +18,14 @@ def list_all():
     #     return jsonify({"message": msg}), 400
 
     perms = get_all_modules_permissions()
-    return jsonify(perms)
+    return Response.new("Lista de permisos", data=perms)
 
 
 @permissionRoute.get("/<int:id>")
 def get_by_id(id: int):
-    is_authorized, msg = check_users_list()
-    if not is_authorized:
-        return jsonify({"message": msg}), 400
+    # is_authorized, msg = check_users_list()
+    # if not is_authorized:
+    #     return jsonify({"message": msg}), 400
 
     obj = TPERMISSION.query.get(id)
     if obj is None:
@@ -32,7 +33,7 @@ def get_by_id(id: int):
 
     response = obj.to_json()
 
-    return jsonify(response)
+    return Response.new("Permiso", data=response)
 
 
 @permissionRoute.put("/<int:id>")

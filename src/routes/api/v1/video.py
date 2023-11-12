@@ -41,11 +41,6 @@ except:
     pass
 
 
-@videosRoutes.post('/asdf')
-def idk():
-    return jsonify({'message': 'holi el video'}), 200
-
-
 @videosRoutes.post('/')
 def create_video():
     if 'video' not in request.files:

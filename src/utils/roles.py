@@ -48,3 +48,15 @@ GROUP BY tm.name;"""
         json[module] = permissions.split(', ')
 
     return json
+
+
+def get_id_permissions_of_module(name: str):
+    q = """SELECT id FROM T_PERMISSION tp WHERE tp.module_id = (SELECT id FROM T_MODULE tm WHERE tm.name = :name);"""
+
+    res = db.session.execute(q, {"name": name})
+
+    r = []
+    for row in res:
+        r.append(row[0])
+
+    return r

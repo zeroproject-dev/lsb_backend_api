@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `T_USER` (
   `first_surname` VARCHAR(255) NOT NULL,
   `second_surname` VARCHAR(255),
   `email` VARCHAR(255) NOT NULL,
-  `password` VARCHAR(255) NOT NULL,
+  `password` VARCHAR(255) DEFAULT NULL,
   `state` ENUM('active', 'inactive') DEFAULT 'active',
   `role_id` INT
 );
@@ -132,4 +132,4 @@ INSERT IGNORE INTO T_ROLE_PERMISSION (id, role_id, permission_id) VALUES (8, 1, 
 
 INSERT IGNORE INTO T_ROLE (id, name, description) VALUES (1, 'admin', 'Rol con la capacidad de interactuar y modificar todos los modulos del sistema');
 INSERT IGNORE INTO T_ROLE (id, name, description) VALUES (2, 'user', 'Rol sin ningun permiso');
-INSERT IGNORE INTO T_USER (id, first_name, second_name, first_surname, second_surname, email, password, role_id) VALUES (1, 'Admin', 'Admin', 'Admin', 'Admin', 'admin@gmail.com', 'scrypt:32768:8:1$uVaQHFb8cbRFwQzH$6b02a47ca29fe9f57e4cc6669de83b9e4fffd76165d1bf85f8264635a6048a67990c85d4ee8bd7674647b5a05f7b7f40fa478bccd4382b710cd71e796b2b1369', 1);
+INSERT IGNORE INTO T_USER (id, first_name, second_name, first_surname, second_surname, email, password, role_id) VALUES (1, 'Admin', 'Admin', 'Admin', 'Admin', 'admin@gmail.com', 'sha256$DqBixignPwmuuduT$77efdc09a8f62a3339ce905c5358334bd9a11f8313d256a6872f0ca91500515e', 1);

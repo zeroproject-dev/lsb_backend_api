@@ -1,4 +1,4 @@
-version: '3.1'
+version: "3.1"
 
 services:
   app:
@@ -25,4 +25,3 @@ services:
     volumes:
       - ./docker_data/data:/var/lib/mysql
       - ./config/init.sql:/docker-entrypoint-initdb.d/init.sql
-

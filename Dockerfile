@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.4
-FROM --platform=$BUILDPLATFORM python:3.11 AS builder
+FROM --platform=$BUILDPLATFORM python:3.7.9 AS builder
 RUN apt update && apt-get install -y git default-libmysqlclient-dev build-essential ffmpeg
 
 WORKDIR /code

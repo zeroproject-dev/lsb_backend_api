@@ -19,6 +19,9 @@ flask-cors = "4.0.0"
 mediapipe = "0.8.5"
 tensorflow = "2.4.1"
 tensorflow-gpu = "2.4.1"
+protobuf = "3.19.1"
+pytest = "^7.4.3"
+flask-socketio = "^5.3.6"
 
 [tool.poetry.group.dev.dependencies]
 autopep8 = "^2.0.4"
