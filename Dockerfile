@@ -16,4 +16,4 @@ ENV JWT_KEY bJHYd7M8sYoTgdCLBryz^eg&Hz2&wN4N
 EXPOSE 3300
 
 # CMD ["flask", "run"]
-CMD ["python3", "src/main.py"]
+CMD ["python3", "main.py"]

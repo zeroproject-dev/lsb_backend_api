@@ -17,4 +17,5 @@ if __name__ == "__main__":
         port=3300,
         debug=os.getenv("ENV") == "debug" or os.getenv("ENV") == "test",
         host="0.0.0.0",
+        allow_unsafe_werkzeug=True,
     )
