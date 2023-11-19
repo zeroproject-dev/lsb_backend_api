@@ -1,14 +1,10 @@
 from flask import Blueprint, jsonify, request
-from database.db import db
-from middlewares.users_check import (
-    check_users_delete,
-    check_users_list,
-)
-from models.response import Response
-from models.role import TROLE, TROLEPERMISSION
-from utils.roles import get_id_permissions_of_module, get_permissions_of_role
+from src.database.db import db
+from src.models.response import Response
+from src.models.role import TROLE, TROLEPERMISSION
+from src.utils.roles import get_id_permissions_of_module, get_permissions_of_role
 
-from utils.validators import is_valid_json_role
+from src.utils.validators import is_valid_json_role
 
 roleRoutes = Blueprint("roles", __name__, url_prefix="/roles")
 

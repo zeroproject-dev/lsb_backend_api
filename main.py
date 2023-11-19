@@ -1,6 +1,7 @@
 import os
 
-from app import app
+from src import app
+from src import socketio
 
 # from database.db import db
 #
@@ -9,7 +10,10 @@ from app import app
 
 
 if __name__ == "__main__":
-    app.run(
+    socketio.run(
+        app,
+        use_reloader=True,
+        log_output=True,
         port=3300,
         debug=os.getenv("ENV") == "debug" or os.getenv("ENV") == "test",
         host="0.0.0.0",

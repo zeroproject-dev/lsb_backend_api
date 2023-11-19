@@ -1,12 +1,11 @@
-from models.response import Response
+from src.models.response import Response
 from flask import Blueprint, jsonify, request
-from database.db import db
-from middlewares.users_check import check_users_list, \
-    check_users_modify
-from models.role import TPERMISSION
-from utils.roles import get_all_modules_permissions
+from src.database.db import db
+from src.middlewares.users_check import check_users_modify
+from src.models.role import TPERMISSION
+from src.utils.roles import get_all_modules_permissions
 
-from utils.validators import is_valid_json_role
+from src.utils.validators import is_valid_json_role
 
 permissionRoute = Blueprint("permissions", __name__, url_prefix="/permissions")
 

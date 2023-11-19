@@ -1,16 +1,11 @@
 from sqlalchemy.util.deprecations import os
-from middlewares.jwt import jwt_required
-from models.response import Response
-from utils.validators import is_valid_json_user
-from services.mail_service import send_create_account
-from models.user import TUSER
+from src.models.response import Response
+from src.middlewares.jwt import jwt_required
+from src.utils.validators import is_valid_json_user
+from src.services.mail_service import send_create_account
+from src.models.user import TUSER
 from flask import Blueprint, jsonify, request
-from database.db import db
-from middlewares.users_check import (
-    check_users_delete,
-    check_users_list,
-    check_users_modify,
-)
+from src.database.db import db
 
 
 usersRoutes = Blueprint("users", __name__, url_prefix="/users")

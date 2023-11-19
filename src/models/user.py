@@ -2,9 +2,9 @@ from sqlalchemy.sql.expression import text
 from sqlalchemy.sql.schema import Column, ForeignKey
 from sqlalchemy.types import Enum, Integer, String
 
-from database.db import db
-from models.role import TROLE
-from utils.passwords import check_password
+from src.database.db import db
+from src.models.role import TROLE
+from src.utils.passwords import check_password
 
 
 class TUSER(db.Model):

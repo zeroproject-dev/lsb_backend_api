@@ -1,9 +1,10 @@
 import os
 from flask_cors import CORS
 from flask import Flask, jsonify
-from database.db import db
-from routes.api import api
+from .database.db import db
+from .routes.api import api
 from dotenv import load_dotenv
+from flask_socketio import SocketIO
 
 load_dotenv()
 

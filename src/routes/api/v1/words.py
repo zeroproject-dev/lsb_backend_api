@@ -1,9 +1,9 @@
 from flask import Blueprint, jsonify, request
 
-from models.word import TWORD
-from models.response import Response
-from utils.validators import is_valid_json_word
-from database.db import db
+from src.models.word import TWORD
+from src.models.response import Response
+from src.utils.validators import is_valid_json_word
+from src.database.db import db
 
 
 wordsRoutes = Blueprint("words", __name__, url_prefix="/words")
