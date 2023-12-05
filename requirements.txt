@@ -82,7 +82,6 @@ scikit-learn==1.0.2
 scipy==1.7.3
 simple-websocket==1.0.0
 six==1.15.0
-sklearn==0.0.post11
 SQLAlchemy==1.4.49
 tensorboard==2.9.0
 tensorboard-data-server==0.6.1

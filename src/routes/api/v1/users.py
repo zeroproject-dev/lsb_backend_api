@@ -35,6 +35,11 @@ def create_user():
 
     new_user = TUSER().from_json(json_user)
 
+    if os.getenv("ENV") == "test":
+        new_user[
+            "password"
+        ] = "sha256$DqBixignPwmuuduT$77efdc09a8f62a3339ce905c5358334bd9a11f8313d256a6872f0ca91500515e"
+
     db.session.add(new_user)
     db.session.commit()
 
