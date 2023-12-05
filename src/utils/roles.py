@@ -13,7 +13,7 @@ GROUP BY tm.name;"""
 
     for row in res:
         module, permissions = row
-        json[module] = permissions.split(',')
+        json[module] = permissions.split(",")
 
     return json
 
@@ -28,7 +28,7 @@ GROUP BY tm.name;"""
 
     for row in res:
         module, permissions = row
-        json[module] = permissions.split(', ')
+        json[module] = permissions.split(", ")
 
     return json
 
@@ -45,7 +45,7 @@ GROUP BY tm.name;"""
 
     for row in res:
         module, permissions = row
-        json[module] = permissions.split(', ')
+        json[module] = permissions.split(", ")
 
     return json
 

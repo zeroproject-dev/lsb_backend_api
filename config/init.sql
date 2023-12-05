@@ -103,18 +103,6 @@ INSERT IGNORE INTO T_ROLE_PERMISSION (id, role_id, permission_id) VALUES (2, 1, 
 INSERT IGNORE INTO T_ROLE_PERMISSION (id, role_id, permission_id) VALUES (3, 1, 3);
 INSERT IGNORE INTO T_ROLE_PERMISSION (id, role_id, permission_id) VALUES (4, 1, 4);
 
--- roles
-INSERT IGNORE INTO T_PERMISSION (id, name, description, module_id) VALUES (9, 'Listar roles', 'Leer la lista de roles', 4);
-INSERT IGNORE INTO T_PERMISSION (id, name, description, module_id) VALUES (10, 'Agregar roles', 'Alta de roles', 4);
-INSERT IGNORE INTO T_PERMISSION (id, name, description, module_id) VALUES (11, 'Eliminar roles', 'Baja de roles', 4);
-INSERT IGNORE INTO T_PERMISSION (id, name, description, module_id) VALUES (12, 'Modificar roles', 'Modificar roles', 4);
-
--- Permissions to admin
-INSERT IGNORE INTO T_ROLE_PERMISSION (id, role_id, permission_id) VALUES (1, 1, 1);
-INSERT IGNORE INTO T_ROLE_PERMISSION (id, role_id, permission_id) VALUES (2, 1, 2);
-INSERT IGNORE INTO T_ROLE_PERMISSION (id, role_id, permission_id) VALUES (3, 1, 3);
-INSERT IGNORE INTO T_ROLE_PERMISSION (id, role_id, permission_id) VALUES (4, 1, 4);
-
 -- videos
 INSERT IGNORE INTO T_PERMISSION (id, name, description, module_id) VALUES (5, 'Listar videos', 'Obtener la lista de videos', 2);
 INSERT IGNORE INTO T_PERMISSION (id, name, description, module_id) VALUES (6, 'Agregar video', 'Alta de video', 2);
@@ -127,9 +115,24 @@ INSERT IGNORE INTO T_ROLE_PERMISSION (id, role_id, permission_id) VALUES (6, 1, 
 INSERT IGNORE INTO T_ROLE_PERMISSION (id, role_id, permission_id) VALUES (7, 1, 7);
 INSERT IGNORE INTO T_ROLE_PERMISSION (id, role_id, permission_id) VALUES (8, 1, 8);
 
+-- roles
+INSERT IGNORE INTO T_PERMISSION (id, name, description, module_id) VALUES (9, 'Listar roles', 'Leer la lista de roles', 4);
+INSERT IGNORE INTO T_PERMISSION (id, name, description, module_id) VALUES (10, 'Agregar roles', 'Alta de roles', 4);
+INSERT IGNORE INTO T_PERMISSION (id, name, description, module_id) VALUES (11, 'Eliminar roles', 'Baja de roles', 4);
+INSERT IGNORE INTO T_PERMISSION (id, name, description, module_id) VALUES (12, 'Modificar roles', 'Modificar roles', 4);
+
+-- Permissions to admin
+INSERT IGNORE INTO T_ROLE_PERMISSION (id, role_id, permission_id) VALUES (9, 1, 9);
+INSERT IGNORE INTO T_ROLE_PERMISSION (id, role_id, permission_id) VALUES (10, 1, 10);
+INSERT IGNORE INTO T_ROLE_PERMISSION (id, role_id, permission_id) VALUES (11, 1, 11);
+INSERT IGNORE INTO T_ROLE_PERMISSION (id, role_id, permission_id) VALUES (12, 1, 12);
 
 
+INSERT IGNORE INTO T_WORD (id, word) VALUES (1, 'hola');
+INSERT IGNORE INTO T_WORD (id, word) VALUES (2, 'gracias');
+INSERT IGNORE INTO T_WORD (id, word) VALUES (3, 'te amo');
 
-INSERT IGNORE INTO T_ROLE (id, name, description) VALUES (1, 'admin', 'Rol con la capacidad de interactuar y modificar todos los modulos del sistema');
-INSERT IGNORE INTO T_ROLE (id, name, description) VALUES (2, 'user', 'Rol sin ningun permiso');
+
+INSERT IGNORE INTO T_ROLE (id, name, description) VALUES (1, 'Administrador', 'Rol con la capacidad de interactuar y modificar todos los modulos del sistema');
+INSERT IGNORE INTO T_ROLE (id, name, description) VALUES (2, 'Usuario', 'Rol sin ningun permiso');
 INSERT IGNORE INTO T_USER (id, first_name, second_name, first_surname, second_surname, email, password, role_id) VALUES (1, 'Admin', 'Admin', 'Admin', 'Admin', 'admin@gmail.com', 'sha256$DqBixignPwmuuduT$77efdc09a8f62a3339ce905c5358334bd9a11f8313d256a6872f0ca91500515e', 1);
