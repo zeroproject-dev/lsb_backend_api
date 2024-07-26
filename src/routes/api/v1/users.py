@@ -1,6 +1,6 @@
 from sqlalchemy.sql.operators import or_
-from sqlalchemy.util.deprecations import os
 from middlewares.jwt import jwt_required
+import os
 from models.response import Response
 from services.mail_service import send_create_account
 from models.user import TUSER
@@ -25,7 +25,9 @@ def list_users():
     else:
         users = TUSER.query.all()
 
-    return Response.new("Lista de usuarios", data=[user.to_json() for user in users])
+    users = [user.to_json() for user in users]    
+
+    return Response.new("Lista de usuarios", data=users)
 
 
 @usersRoutes.post("/")
@@ -57,7 +59,7 @@ def create_user():
     return Response.success("Usuario creado correctamente", data=new_user.to_json())
 
 
-@usersRoutes.get("/<int:id>")
+@usersRoutes.get("/<int:id>/")
 @jwt_required("usuarios", ["Listar usuarios"])
 def get_user(id: int):
     user = TUSER.query.get(id)
@@ -67,7 +69,7 @@ def get_user(id: int):
     return Response.success("Usuario", user.to_json())
 
 
-@usersRoutes.delete("/<int:id>")
+@usersRoutes.delete("/<int:id>/")
 @jwt_required("usuarios", ["eliminar usuario"])
 def delete_user(id: int):
     if id == 1:
@@ -83,7 +85,7 @@ def delete_user(id: int):
     return Response.success("Usuario desactivado correctamente", user.json_user())
 
 
-@usersRoutes.put("/<int:id>")
+@usersRoutes.put("/<int:id>/")
 @jwt_required("usuarios", ["modificar usuario"])
 def update_user(id: int):
     if id == 1:
@@ -103,9 +105,9 @@ def update_user(id: int):
     return Response.new("Usuario actualizado correctamente", data=user.to_json())
 
 
-# @usersRoutes.post("/send")
-# def send():
-#     if send_create_account({"name": "Andres", "email": "andrescopeticona7@gmail.com"}):
-#         return "correct", 200
-#
-#     return "incorrect", 400
+@usersRoutes.post("/send")
+def send():
+    if send_create_account({"name": "Andres", "email": "andrescopeticona7@gmail.com", "id": 1}):
+        return "correct", 200
+
+    return "incorrect", 400

@@ -11,10 +11,12 @@ class AuthService:
     @classmethod
     def generate_token(cls, user):
         date_now = datetime.now(tz=cls.tz)
+        iat = int(date_now.timestamp())  # Convertir a número entero
+        exp = int((date_now + timedelta(days=1)).timestamp())
         payload = {
-            "iat": date_now,
-            "exp": date_now + timedelta(days=1),
-            "user": user.id,
+            "iat": iat,
+            "exp": exp,
+            "user": user.to_json(),
         }
 
         return jwt.encode(payload, cls.jwt_key, algorithm="HS256")
@@ -23,9 +25,9 @@ class AuthService:
     def generate_token_change_pw(cls, id):
         date_now = datetime.now(tz=cls.tz)
         payload = {
-            "iat": date_now,
-            "exp": date_now + timedelta(hours=1),
-            "id": id,
+            "iat": str(date_now),
+            "exp": str(date_now + timedelta(hours=1)),
+            "id": str(id),
         }
 
         return jwt.encode(payload, cls.jwt_key, algorithm="HS256")
@@ -37,3 +39,7 @@ class AuthService:
             return True
         except Exception:
             return False
+
+    def get_expires_in(self, token):
+        payload = jwt.decode(token, os.getenv("JWT_KEY"), algorithms=["HS256"])
+        return payload["exp"] 

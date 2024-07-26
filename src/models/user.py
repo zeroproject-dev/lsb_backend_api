@@ -20,16 +20,6 @@ class TUSER(db.Model):
     state = Column(Enum("active", "inactive"), server_default=text("'active'"))
     role_id = Column(Integer, ForeignKey(TROLE.id))
 
-    # def __init__(self, first_name, second_name, first_surname, second_surname, email, password, role):
-    #     self.first_name = first_name
-    #     self.first_surname = first_surname
-    #     self.email = email
-    #     self.password = password
-    #     self.second_name = second_name
-    #     self.second_surname = second_surname
-    #     self.state = 'active'
-    #     self.role_id = role
-
     def from_json(self, json):
         self.first_name = json["first_name"]
         self.first_surname = json["first_surname"]

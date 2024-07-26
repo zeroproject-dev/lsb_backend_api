@@ -64,7 +64,7 @@ def create():
     return Response.success("Rol creado correctamente", role_json)
 
 
-@roleRoutes.get("/<int:id>")
+@roleRoutes.get("/<int:id>/")
 def get_by_id(id: int):
     obj = TROLE.query.get(id)
     if obj is None:
@@ -76,7 +76,7 @@ def get_by_id(id: int):
     return jsonify(response)
 
 
-@roleRoutes.delete("/<int:id>")
+@roleRoutes.delete("/<int:id>/")
 def delete(id: int):
     if id == 1:
         return jsonify({"message": "Acceso denegado"})
@@ -90,14 +90,10 @@ def delete(id: int):
     return jsonify(obj.to_json())
 
 
-@roleRoutes.put("/<int:id>")
+@roleRoutes.put("/<int:id>/")
 def update(id: int):
     if id == 1:
         return Response.fail("Acceso denegado"), 400
-
-    # json = request.json
-    # if not is_valid_json_role(json):
-    #     return jsonify({"message": "Petición incorrecta"}), 400
 
     json = request.json
     if json is None:
@@ -109,16 +105,5 @@ def update(id: int):
 
     obj.from_json(json)
     db.session.commit()
-
-    del json["name"]
-    del json["description"]
-    del json["state"]
-    del json["id"]
-
-    print(json)
-    for key, value in json.items():
-        for i, v in enumerate(value):
-            if v:
-                print(key, v)
 
     return Response.success("Rol actualizado correctamente", {})

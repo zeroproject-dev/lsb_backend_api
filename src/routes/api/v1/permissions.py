@@ -5,6 +5,7 @@ from middlewares.users_check import check_users_list, \
     check_users_modify
 from models.role import TPERMISSION
 from utils.roles import get_all_modules_permissions
+from middlewares.jwt import jwt_required
 
 from utils.validators import is_valid_json_role
 
@@ -12,6 +13,7 @@ permissionRoute = Blueprint("permissions", __name__, url_prefix="/permissions")
 
 
 @permissionRoute.get("/")
+@jwt_required("usuarios", ["Listar usuarios"])
 def list_all():
     # is_authorized, msg = check_users_list()
     # if not is_authorized:
@@ -21,7 +23,7 @@ def list_all():
     return Response.new("Lista de permisos", data=perms)
 
 
-@permissionRoute.get("/<int:id>")
+@permissionRoute.get("/<int:id>/")
 def get_by_id(id: int):
     # is_authorized, msg = check_users_list()
     # if not is_authorized:
@@ -36,7 +38,7 @@ def get_by_id(id: int):
     return Response.new("Permiso", data=response)
 
 
-@permissionRoute.put("/<int:id>")
+@permissionRoute.put("/<int:id>/")
 def update(id: int):
     is_authorized, msg = check_users_modify()
     if not is_authorized:

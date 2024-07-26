@@ -11,10 +11,11 @@ BASE_PATH = os.getcwd()
 STATIC = os.path.join(BASE_PATH, "static")
 app = Flask(__name__, static_folder=STATIC)
 
-CORS(app, resources={r"/api/*": {"origins": "*"}})
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 app.config["SECRET_KEY"] = (
-    str(os.getenv("SECRET_KEY")) if os.getenv("SECRET_KEY") is not None else "test"
+    str(os.getenv("SECRET_KEY")) if os.getenv(
+        "SECRET_KEY") is not None else "test"
 )
 
 # Configure database

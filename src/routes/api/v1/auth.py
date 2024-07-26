@@ -34,8 +34,10 @@ def login():
     token = AuthService().generate_token(user)
     print(token)
     user = user.to_json()
+    print(user)
     user["token"] = token
     user["permissions"] = get_permissions_of_role(user.get("role"))
+    user["expires_at"] = AuthService().get_expires_in(token)
 
     return Response.new("Inicio de sesión correcto", data=user)
 
@@ -51,7 +53,7 @@ def verify_token():
     return Response.new("Token valido")
 
 
-@authRoutes.post("/password_reset/<string:token>")
+@authRoutes.post("/password_reset/<string:token>/")
 def password_reset(token):
     try:
         payload = jwt.decode(token, os.getenv("JWT_KEY"), algorithms=["HS256"])
@@ -72,7 +74,7 @@ def password_reset(token):
     return Response.new("Cambio de contraseña correcto")
 
 
-@authRoutes.get("/confirm/<int:id>")
+@authRoutes.get("/confirm/<int:id>/")
 def get_user_to_confirm(id):
     user = TUSER.query.get(id)
     if user is None:
@@ -84,7 +86,7 @@ def get_user_to_confirm(id):
     return Response.success("Usuario", user.to_json())
 
 
-@authRoutes.post("/confirm/<int:id>")
+@authRoutes.post("/confirm/<int:id>/")
 def confirm_account(id):
     user: TUSER = TUSER.query.get(id)
     if user is None:
@@ -105,6 +107,6 @@ def confirm_account(id):
     return Response.new("Cuenta creada correctamente")
 
 
-@authRoutes.get("/hash/<string:passw>")
+@authRoutes.get("/hash/<string:passw>/")
 def hash_test(passw: str):
     return generate_password_hash(passw, method="sha256")

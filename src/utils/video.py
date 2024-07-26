@@ -6,7 +6,7 @@ import subprocess
 
 
 def generate_preview(video_path, img_output_path):
-    subprocess.call(['ffmpeg', '-i', video_path, '-ss',
+    return subprocess.run(['ffmpeg', '-i', video_path, '-ss',
                     '00:00:00.000', '-vframes', '1', img_output_path])
 
 
@@ -56,7 +56,7 @@ def extract_points_of_video(video):
     points = []
 
     with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
-        for _ in range(30 * 2):
+        for _ in range(30):
             _, frame = cap.read()
 
             if frame is None:

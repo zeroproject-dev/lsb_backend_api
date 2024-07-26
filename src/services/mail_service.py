@@ -1,10 +1,10 @@
 import os
 
 import boto3
-from botocore.exceptions import ClientError
-# import smtplib
-# from email.mime.multipart import MIMEMultipart
-# from email.mime.text import MIMEText
+# from botocore.exceptions import ClientError
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 from flask.templating import render_template
 
@@ -13,7 +13,7 @@ def send_create_account(user):
     subject = "Confirmación de cuenta"
     name = user["name"]
     data = {
-        "app_url": "https://lsb.zeroproject.dev/",
+        "app_url": f"{os.getenv('FRONT_SERVER_URL')}/",
         "header": f"Hola, {name},",
         "body": "Para completar tu registro por favor ingresa al siguiente enlace.",
         "button": "Finalizar registro",
@@ -44,52 +44,51 @@ def send_create_account(user):
     # assert r.status_code == 250
 
 
-def send_mail(email: str, subject: str, body: str):
-    ses_client = boto3.client("ses")
+# def send_mail(email: str, subject: str, body: str):
+#     ses_client = boto3.client("ses")
 
-    send_args = {
-        "Source": "ro-reply@traductorlsb.com",
-        "Destination": {"ToAddresses": [email]},
-        "Message": {
-            "Subject": {"Data": subject},
-            "Body": {"Html": {"Data": body}},
-        },
-    }
+#     send_args = {
+#         "Source": "noreply@traductorlsb.com",
+#         "Destination": {"ToAddresses": [email]},
+#         "Message": {
+#             "Subject": {"Data": subject},
+#             "Body": {"Html": {"Data": body}},
+#         },
+#     }
+
+#     try:
+#         response = ses_client.send_email(**send_args)
+#         message_id = response["MessageId"]
+#         print(
+#             "Sent mail %s from %s to %s.",
+#             message_id,
+#             "noreply@traductorlsb.com",
+#             email,
+#         )
+#     except ClientError:
+#         print("Couldn't send mail from %s to %s.", "noreply@traductorlsb.com", email)
+#         raise
+#     else:
+#         return message_id
+
+
+def send_mail(email, subject, body):
+    em = MIMEMultipart()
+    em["From"] = str(os.getenv("EMAIL_FROM"))
+    em["To"] = email
+    em["Subject"] = subject
+    em.attach(MIMEText(body, "html"))
 
     try:
-        response = ses_client.send_email(**send_args)
-        message_id = response["MessageId"]
-        print(
-            "Sent mail %s from %s to %s.",
-            message_id,
-            "ro-reply@traductorlsb.com",
-            email,
-        )
-    except ClientError:
-        print("Couldn't send mail from %s to %s.", "ro-reply@traductorlsb.com", email)
-        raise
-    else:
-        return message_id
-
-
-# def send_mail(email, subject, body):
-#     em = MIMEMultipart()
-#     em["From"] = str(os.getenv("EMAIL_FROM"))
-#     em["To"] = email
-#     em["Subject"] = subject
-#     em.attach(MIMEText(body, "html"))
-#
-#     try:
-#         port = int(str(os.getenv("SMTP_PORT")))
-#         server = smtplib.SMTP(str(os.getenv("SMTP_SERVER")), port)
-#         server.ehlo()
-#         server.starttls()
-#         server.ehlo()
-#         server.login(str(os.getenv("SMTP_USER")), str(os.getenv("SMTP_PASSWORD")))
-#         server.sendmail(em["from"], email, em.as_string())
-#         server.close()
-#         print("Email send")
-#         return True
-#     except Exception as e:
-#         print("Error sending email", e)
-#         return False
+        port = int(str(os.getenv("SMTP_PORT")))
+        server = smtplib.SMTP(str(os.getenv("SMTP_SERVER")), port)
+        server.ehlo()
+        server.starttls()
+        server.ehlo()
+        server.login(str(os.getenv("SMTP_USER")), str(os.getenv("SMTP_PASSWORD")))
+        server.sendmail(em["from"], email, em.as_string())
+        server.close()
+        return True
+    except Exception as e:
+        print("Error sending email", e)
+        return False

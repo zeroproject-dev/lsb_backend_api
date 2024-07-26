@@ -57,6 +57,7 @@ CREATE TABLE IF NOT EXISTS `T_VIDEO` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
   `path` VARCHAR(255) NOT NULL,
   `preview` VARCHAR(255),
+  `points` VARCHAR(255),
   `duration` FLOAT,
   `bucket` VARCHAR(255) NOT NULL,
   `region` VARCHAR(255) NOT NULL,
@@ -135,4 +136,4 @@ INSERT IGNORE INTO T_WORD (id, word) VALUES (3, 'te amo');
 
 INSERT IGNORE INTO T_ROLE (id, name, description) VALUES (1, 'Administrador', 'Rol con la capacidad de interactuar y modificar todos los modulos del sistema');
 INSERT IGNORE INTO T_ROLE (id, name, description) VALUES (2, 'Usuario', 'Rol sin ningun permiso');
-INSERT IGNORE INTO T_USER (id, first_name, second_name, first_surname, second_surname, email, password, role_id) VALUES (1, 'Admin', 'Admin', 'Admin', 'Admin', 'admin@gmail.com', 'sha256$DqBixignPwmuuduT$77efdc09a8f62a3339ce905c5358334bd9a11f8313d256a6872f0ca91500515e', 1);
+INSERT IGNORE INTO T_USER (id, first_name, second_name, first_surname, second_surname, email, password, role_id) VALUES (1, 'Admin', 'Admin', 'Admin', 'Admin', 'admin@gmail.com', 'scrypt:32768:8:1$Hq5smcbcyeY5OVFv$1669c0117099265d6b9d0119ec92e3f68087e6242bb047ae0f9f25d0583e1a9bc399fd5b1917d5c1c0bcfa40d64cefae578f3901cbf51d597ac20e1d0a8f2189', 1);

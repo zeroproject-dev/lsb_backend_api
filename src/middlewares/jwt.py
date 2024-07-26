@@ -2,7 +2,7 @@ from functools import wraps
 from typing import Any
 from flask import current_app, g, request
 import jwt
-from sqlalchemy.util.deprecations import os
+import os
 
 from models.user import TUSER
 from models.response import Response
@@ -11,11 +11,12 @@ from utils.roles import get_permissions_of_role
 
 def check_jwt(token):
     try:
-        payload = jwt.decode(token, os.getenv("JWT_KEY"), algorithms=["HS256"])
+        payload = jwt.decode(token, os.getenv("JWT_KEY"), algorithms="HS256")
         return None, payload["user"]
     except jwt.ExpiredSignatureError:
         return "Token JWT expirado", None
-    except jwt.InvalidTokenError:
+    except jwt.InvalidTokenError as e:
+        print(e)
         return "Token JWT inválido", None
 
 
@@ -30,7 +31,7 @@ def check_permissions(module, permissions):
     if res is not None:
         return None, res
 
-    user = TUSER.query.get(code)
+    user = TUSER.query.get(code['id'])
 
     if not user:
         return None, "Usuario desconocido"
@@ -50,15 +51,15 @@ def check_permissions(module, permissions):
 
 
 def jwt_required(module, permissions) -> Any:
-    def wrapper(fn):
-        @wraps(fn)
-        def decorator(*args, **kwargs):
-            user, msg = check_permissions(module, permissions)
-            if user is None:
-                return Response.fail(msg), 400
-            g.user = user
-            return current_app.ensure_sync(fn)(*args, **kwargs)
+  def wrapper(fn):
+    @wraps(fn)
+    def decorator(*args, **kwargs):
+      user, msg = check_permissions(module, permissions)
+      if user is None:
+        return Response.fail(msg), 400
+      g.user = user
+      return current_app.ensure_sync(fn)(*args, **kwargs)
 
-        return decorator
+    return decorator
 
-    return wrapper
+  return wrapper
