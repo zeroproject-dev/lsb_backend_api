@@ -1,9 +1,9 @@
 from operator import or_
 from flask import Blueprint, jsonify, request
-from database.db import db
-from models.response import Response
-from models.role import TROLE, TROLEPERMISSION
-from utils.roles import get_id_permissions_of_module, get_permissions_of_role
+from ....database.db import db
+from ....models.response import Response
+from ....models.role import TROLE, TROLEPERMISSION
+from ....utils.roles import get_id_permissions_of_module, get_permissions_of_role
 
 roleRoutes = Blueprint("roles", __name__, url_prefix="/roles")
 

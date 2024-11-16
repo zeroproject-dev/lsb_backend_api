@@ -1,6 +1,6 @@
 import os
 
-import boto3
+# import boto3
 # from botocore.exceptions import ClientError
 import smtplib
 from email.mime.multipart import MIMEMultipart
@@ -8,10 +8,12 @@ from email.mime.text import MIMEText
 
 from flask.templating import render_template
 
+from src.modules.user.models.user import TUSER
 
-def send_create_account(user):
+
+def send_create_account(user: TUSER):
     subject = "Confirmación de cuenta"
-    name = user["name"]
+    name = user.get_name()
     data = {
         "app_url": f"{os.getenv('FRONT_SERVER_URL')}/",
         "header": f"Hola, {name},",

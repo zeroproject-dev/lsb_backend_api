@@ -3,14 +3,16 @@ import os
 
 from flask import Blueprint, request
 from werkzeug.security import generate_password_hash
-from models.response import Response
-from models.user import TUSER
-from services.auth_service import AuthService
-from database.db import db
-from utils.passwords import hash_password
+from ....models.response import Response
 
-from utils.roles import get_permissions_of_role
-from utils.validators import is_valid_json_login
+# from models.user import TUSER
+from ....modules.user.models.user import TUSER
+from ....services.auth_service import AuthService
+from ....database.db import db
+from ....utils.passwords import hash_password
+
+from ....utils.roles import get_permissions_of_role
+from ....utils.validators import is_valid_json_login
 
 
 authRoutes = Blueprint("auth", __name__, url_prefix="/auth")

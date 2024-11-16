@@ -4,14 +4,15 @@ from flask import current_app, g, request
 import jwt
 import os
 
-from models.user import TUSER
-from models.response import Response
-from utils.roles import get_permissions_of_role
+# from models.user import TUSER
+from ..modules.user.models.user import TUSER
+from ..models.response import Response
+from ..utils.roles import get_permissions_of_role
 
 
-def check_jwt(token):
+def check_jwt(token) -> tuple[str | None, dict | None]:
     try:
-        payload = jwt.decode(token, os.getenv("JWT_KEY"), algorithms="HS256")
+        payload = jwt.decode(token, os.getenv("JWT_KEY"), algorithms=["HS256"])
         return None, payload["user"]
     except jwt.ExpiredSignatureError:
         return "Token JWT expirado", None
@@ -20,7 +21,7 @@ def check_jwt(token):
         return "Token JWT inválido", None
 
 
-def check_permissions(module, permissions):
+def check_permissions(module, permissions) -> tuple[dict | None, str]:
     token = request.headers.get("Authorization")
 
     if not token:
@@ -31,7 +32,10 @@ def check_permissions(module, permissions):
     if res is not None:
         return None, res
 
-    user = TUSER.query.get(code['id'])
+    if code is None:
+        return None, "Usuario desconocido"
+
+    user = TUSER.query.get(code["id"])
 
     if not user:
         return None, "Usuario desconocido"
@@ -51,15 +55,15 @@ def check_permissions(module, permissions):
 
 
 def jwt_required(module, permissions) -> Any:
-  def wrapper(fn):
-    @wraps(fn)
-    def decorator(*args, **kwargs):
-      user, msg = check_permissions(module, permissions)
-      if user is None:
-        return Response.fail(msg), 400
-      g.user = user
-      return current_app.ensure_sync(fn)(*args, **kwargs)
+    def wrapper(fn):
+        @wraps(fn)
+        def decorator(*args, **kwargs):
+            user, msg = check_permissions(module, permissions)
+            if user is None:
+                return Response.fail(msg), 400
+            g.user = user
+            return current_app.ensure_sync(fn)(*args, **kwargs)
 
-    return decorator
+        return decorator
 
-  return wrapper
+    return wrapper

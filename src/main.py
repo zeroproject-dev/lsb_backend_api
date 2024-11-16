@@ -1,6 +1,6 @@
 import os
 
-from app import app
+from .app import app
 
 # from database.db import db
 #

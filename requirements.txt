@@ -41,7 +41,7 @@ markdown-it-py==3.0.0
 MarkupSafe==2.1.5
 matplotlib==3.8.3
 mdurl==0.1.2
-mediapipe==0.10.11
+mediapipe==0.10.14
 ml-dtypes==0.3.2
 mpmath==1.3.0
 mysql-connector-python==8.3.0
@@ -98,3 +98,22 @@ typing_extensions==4.10.0
 urllib3==2.2.1
 Werkzeug==3.0.1
 wrapt==1.16.0
+
+python = "3.10.13"
+Flask = "2.0.3"
+python-dotenv = "0.19.1"
+flask-sqlalchemy = "2.5.1"
+mysqlclient = "2.1.0"
+jsonschema = "4.0.1"
+pyjwt = "2.8.0"
+pytz = "2023.3.post1"
+boto3 = "1.28.51"
+flask-cors = "4.0.0"
+mediapipe = "0.8.5"
+tensorflow = "2.4.1"
+tensorflow-gpu = "2.4.1"
+protobuf = "3.19.1"
+pytest = "^7.4.3"
+flask-socketio = "^5.3.6"
+
+sqlacodegen = { git = "https://github.com/agronholm/sqlacodegen.git" }

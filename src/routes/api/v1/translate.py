@@ -1,24 +1,24 @@
-from keras.models import Sequential
-from keras.layers import Dense, GRU, Bidirectional, Softmax, Input
-from keras.utils import to_categorical
-from keras.saving import save_model
+from keras.api.models import Sequential
+from keras.api.layers import Dense, GRU, Bidirectional, Softmax, Input
+from keras.api.utils import to_categorical
+from keras.api.saving import save_model
+
 # from keras.cOallbacks import Callback
 # from livelossplot import PlotLossesKeras
 from threading import Thread
 from flask import Blueprint, request
+
 # from numpy.core.arrayprint import np
 import numpy as np
 import os
+
 # from tensorflow.keras.layers import Dense, GRU, Bidirectional
 # from tensorflow.keras.models import Sequential
 # from tensorflow.keras.utils import to_categorical
 from sklearn.model_selection import train_test_split
-from database.db import db
-from sqlalchemy.sql import exists
 
-from models.word import TWORD
-from models.wordvideo import TWORDVIDEO
-from models.response import Response
+from ....models.word import TWORD
+from ....models.response import Response
 import requests
 
 
@@ -43,115 +43,121 @@ training_status = 0
 
 
 def send_update_model():
-  try:
-    response = requests.post(
-        f"{translation_service_host}/update", files={"model":  ('lsb.keras', open("lsb.keras", "rb"))}
-    )
-    print(response.text)
+    try:
+        response = requests.post(
+            f"{translation_service_host}/update",
+            files={"model": ("lsb.keras", open("lsb.keras", "rb"))},
+        )
+        print(response.text)
 
-    response.raise_for_status()
-  except Exception as e:
-    raise e
+        response.raise_for_status()
+    except Exception as e:
+        raise e
 
 
 def train_model(actions):
-  # send_update_model()
-  # return
-  global model
-  try:
-    DATA_PATH = os.path.join(os.getcwd(), "static", "points")
-    sequence_length = 30
+    # send_update_model()
+    # return
+    global model
+    try:
+        DATA_PATH = os.path.join(os.getcwd(), "static", "points")
+        sequence_length = 30
 
-    label_map = {label: num for num, label in enumerate(actions)}
-    sequences, labels = [], []
-    for action in actions:
-      for sequence in np.array(os.listdir(os.path.join(DATA_PATH, action))).astype(int):
-        window = []
-        for frame_num in range(0, sequence_length):
-          res = np.load(
-              os.path.join(
-                  DATA_PATH, action, str(sequence), "{}.npy".format(frame_num)
-              )
-          )
-          window.append(res)
-        sequences.append(window)
-        labels.append(label_map[action])
+        label_map = {label: num for num, label in enumerate(actions)}
+        sequences, labels = [], []
+        for action in actions:
+            for sequence in np.array(
+                os.listdir(os.path.join(DATA_PATH, action))
+            ).astype(int):
+                window = []
+                for frame_num in range(0, sequence_length):
+                    res = np.load(
+                        os.path.join(
+                            DATA_PATH, action, str(sequence), "{}.npy".format(frame_num)
+                        )
+                    )
+                    window.append(res)
+                sequences.append(window)
+                labels.append(label_map[action])
 
-    X = np.array(sequences)
-    y = to_categorical(labels).astype(int)
+        X = np.array(sequences)
+        y = to_categorical(labels).astype(int)
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.05)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.05)
 
-    model = Sequential()
-    model.add(Input(shape=(30, 1662)))
-    model.add(
-        Bidirectional(
-            GRU(
-                64,
-                return_sequences=True,
-                activation="relu",
+        model = Sequential()
+        model.add(Input(shape=(30, 1662)))
+        model.add(
+            Bidirectional(
+                GRU(
+                    64,
+                    return_sequences=True,
+                    activation="relu",
+                )
             )
         )
-    )
-    model.add(Bidirectional(GRU(128, return_sequences=True, activation="relu")))
-    model.add(Bidirectional(GRU(64, return_sequences=False, activation="relu")))
-    model.add(Dense(64, activation="relu"))
-    model.add(Dense(32, activation="relu"))
-    model.add(Dense(actions.shape[0], activation="softmax"))
+        model.add(Bidirectional(GRU(128, return_sequences=True, activation="relu")))
+        model.add(Bidirectional(GRU(64, return_sequences=False, activation="relu")))
+        model.add(Dense(64, activation="relu"))
+        model.add(Dense(32, activation="relu"))
+        model.add(Dense(actions.shape[0], activation="softmax"))
 
-    model.compile(
-        optimizer="Adam",
-        loss="categorical_crossentropy",
-        metrics=["categorical_accuracy"],
-    )
-    model.fit(X_train, y_train, epochs=500)
-    model.summary()
-    save_model(model, "lsb.keras")
+        model.compile(
+            optimizer="Adam",
+            loss="categorical_crossentropy",
+            metrics=["categorical_accuracy"],
+        )
+        model.fit(X_train, y_train, epochs=500)
+        model.summary()
+        save_model(model, "lsb.keras")
 
-    send_update_model()
+        send_update_model()
 
-    global training_status
-    training_status = 2
-  except Exception as e:
-    training_status = 3
+        global training_status
+        training_status = 2
+    except Exception as e:
+        training_status = 3
 
 
 # Definir una ruta para iniciar el entrenamiento del modelo
 @translateRoutes.route("/train", methods=["POST"])
 def train():
-  global training_status
-  if training_status == 1:
-    return Response.fail("En entrenamiento")
+    global training_status
+    if training_status == 1:
+        return Response.fail("En entrenamiento")
 
-  training_status = 1
+    training_status = 1
 
-  # actions = db.session.query(TWORD).filter(TWORD.state.ilike("active")).filter(
-  #     exists().where(TWORDVIDEO.word_id == TWORD.id)).all()
-  actions = TWORD.query.filter(TWORD.state.ilike("active")).all()
+    # actions = db.session.query(TWORD).filter(TWORD.state.ilike("active")).filter(
+    #     exists().where(TWORDVIDEO.word_id == TWORD.id)).all()
+    actions = TWORD.query.filter(TWORD.state.ilike("active")).all()
 
-  actions = np.array([word.word for word in actions])
+    actions = np.array([word.word for word in actions])
 
-  thread = Thread(target=train_model, args=(actions,))
-  thread.start()
+    thread = Thread(target=train_model, args=(actions,))
+    thread.start()
 
-  return Response.success("Se empezo el entrenamiento correctamente", None)
+    return Response.success("Se empezo el entrenamiento correctamente", None)
 
 
 @translateRoutes.route("/status", methods=["GET"])
 def status():
-  global training_status
-  response = Response.success("Estado del entrenamiento", {
-                              "status": training_status})
+    global training_status
+    response = Response.success("Estado del entrenamiento", {"status": training_status})
 
-  if training_status == 2:
-    response = Response.success("Entrenamiento completado", {"status": training_status})
-    training_status = 0
+    if training_status == 2:
+        response = Response.success(
+            "Entrenamiento completado", {"status": training_status}
+        )
+        training_status = 0
 
-  if training_status == 3:
-    response = Response.success("Error en el entrenamiento", {"status": training_status})
-    training_status = 0
+    if training_status == 3:
+        response = Response.success(
+            "Error en el entrenamiento", {"status": training_status}
+        )
+        training_status = 0
 
-  return response
+    return response
 
 
 translation_service_host = "http://localhost:6969/"
@@ -159,21 +165,21 @@ translation_service_host = "http://localhost:6969/"
 
 @translateRoutes.post("/service-link")
 def update_service():
-  host_json = request.json
+    host_json = request.json
 
-  if host_json is None:
-    return Response.fail("Petición incorrecta"), 400
+    if host_json is None:
+        return Response.fail("Petición incorrecta"), 400
 
-  global translation_service_host
-  translation_service_host = host_json["host"]
+    global translation_service_host
+    translation_service_host = host_json["host"]
 
-  return Response.success("Servicio cambiado correctamente", None)
+    return Response.success("Servicio cambiado correctamente", None)
 
 
 @translateRoutes.get("/service-link")
 def get_service():
-  global translation_service_host
+    global translation_service_host
 
-  return Response.success(
-      "Link del servicio de traducción", {"host": translation_service_host}
-  )
+    return Response.success(
+        "Link del servicio de traducción", {"host": translation_service_host}
+    )

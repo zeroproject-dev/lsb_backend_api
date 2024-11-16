@@ -42,4 +42,4 @@ class AuthService:
 
     def get_expires_in(self, token):
         payload = jwt.decode(token, os.getenv("JWT_KEY"), algorithms=["HS256"])
-        return payload["exp"] 
+        return payload["exp"]

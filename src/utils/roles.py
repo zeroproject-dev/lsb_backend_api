@@ -1,5 +1,5 @@
 from sqlalchemy.sql.expression import text
-from database.db import db
+from ..database.db import db
 
 
 def get_permissions_of_role(id: int):
